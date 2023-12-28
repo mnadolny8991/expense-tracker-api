@@ -31,13 +31,9 @@ public class CategoryService {
 
 
     public HttpEntity<?> addCategory(CategoryInputDto categoryDto) {
-        if (categoryRepository.existsCategoryByName(categoryDto.getName())) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body("Category: category with such name already exists");
-        }
         Category category = categoryDtoMapper.fromDto(categoryDto);
         categoryRepository.save(category);
+
         return ResponseEntity
                 .created(URI.create("/categories/" + category.getId()))
                 .build();
@@ -49,19 +45,15 @@ public class CategoryService {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Transactional
     public HttpEntity<?> updateCategory(Long id, CategoryInputDto categoryDto) {
         var categoryOpt = categoryRepository.findById(id);
         if (categoryOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        if (categoryRepository.existsCategoryByName(categoryDto.getName())) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body("Category: category with such name already exists");
-        }
-        Category category = categoryOpt.get();
-        categoryDtoMapper.updateFromDto(category, categoryDto);
+        categoryRepository.deleteById(id);
+        Category category = categoryDtoMapper.fromDto(categoryDto);
+        category.setId(id);
+        categoryRepository.save(category);
         return ResponseEntity.ok().build();
     }
 

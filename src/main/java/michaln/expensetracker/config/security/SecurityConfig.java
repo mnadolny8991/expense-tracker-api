@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -43,7 +45,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/users/register").permitAll()
                         .requestMatchers("/users/**").hasRole("ADMIN")
-                        .requestMatchers("/categories/**").hasRole("ADMIN"))
+                        .requestMatchers("/categories/**").hasRole("ADMIN")
+                        .requestMatchers(toH2Console()).hasRole("ADMIN"))
                 .authenticationProvider(daoAuthenticationProvider())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
