@@ -15,4 +15,5 @@ public class UserInputDto {
     private String email;
     @NotBlank(message = "Password: password cannot be blank")
     private String password;
+    private Long userId;
 }

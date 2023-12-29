@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import michaln.expensetracker.model.Expense;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,4 +20,5 @@ public class CategoryInputDto {
     @NotNull(message = "Category: name cannot be null")
     private String name;
     private List<CategoryInputDto> categories;
+    private List<ExpenseInputDto> expenses = new ArrayList<>();
 }

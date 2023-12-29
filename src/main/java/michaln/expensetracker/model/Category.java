@@ -30,4 +30,11 @@ public class Category {
     @JoinColumn(name = "parent_category_id")
     @JsonIgnore
     private Category parentCategory;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Expense> expenses = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
